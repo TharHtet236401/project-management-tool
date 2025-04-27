@@ -1,0 +1,33 @@
+Project Dashboard
+
+Overview of all projects with status indicators
+Quick filtering by status, client, or deadline
+Real-time updates when projects change status
+
+
+Task Management
+
+Create/edit/delete tasks within projects
+Drag-and-drop task prioritization
+Assign tasks to team members with inline editing
+
+
+Client Portal
+
+Limited view for clients to check project progress
+Ability to leave comments on tasks
+File upload/download for project deliverables
+
+
+Notifications System
+
+Task completion notifications
+Approaching deadline alerts
+@mentions in comments to notify team members
+
+
+Time Tracking
+
+Log hours spent on tasks
+Generate time reports by project or team member
+Visual charts showing time distribution
