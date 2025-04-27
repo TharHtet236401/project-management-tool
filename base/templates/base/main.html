@@ -4,21 +4,55 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project Management System</title>
-    <link rel="stylesheet" href="{% static 'base/css/main.css' %}">
+    <title>{% block title %}Project Management System{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="{% static 'base/js/main.js' %}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'base/css/main.css' %}">
+    {% block extra_css %}{% endblock %}
   </head>
   <body>
-    <div class="container">
-      <h1 class="text-3xl font-bold underline">
-        This is the main html
-      </h1>
-      <div class="test">
-        This is a test
-      </div>
+    <div class="min-h-screen flex flex-col">
+      <!-- Navbar -->
+      <nav class="navbar bg-base-100 shadow-sm">
+        <div class="flex-1">
+          <a class="btn btn-ghost text-xl">Project Management</a>
+        </div>
+        <div class="flex-none">
+          <ul class="menu menu-horizontal px-1">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li>
+              <details>
+                <summary>Menu</summary>
+                <ul class="bg-base-100 rounded-t-none p-2">
+                  <li><a>Projects</a></li>
+                  <li><a>Tasks</a></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="flex-grow container mx-auto px-4 py-8">
+        {% block content %}
+        {% endblock %}
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer footer-center p-4 bg-base-300 text-base-content">
+        <div>
+          <p>Copyright © 2024 - All rights reserved</p>
+        </div>
+      </footer>
     </div>
+
+    {% block extra_js %}{% endblock %}
   </body>
 </html>
 
