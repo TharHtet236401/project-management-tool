@@ -1,0 +1,15 @@
+/* Prevent scrollbar on dropdown */
+.dropdown-content {
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+}
+
+/* Hide scrollbar but allow scrolling if needed */
+.dropdown-content::-webkit-scrollbar {
+    display: none;
+}
+
+.dropdown-content {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
