@@ -3,25 +3,17 @@
         <!-- head -->
         <thead>
             <tr>
-                <th class="w-16">Avatar</th>
                 <th>Username</th>
                 <th>Role</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Projects</th>
+                <th>Projects Assigned</th>
                 <th class="w-24">Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for member in team_members %}
                 <tr class="hover:bg-base-200 transition-colors duration-200">
-                    <td>
-                        <div class="avatar placeholder">
-                            <div class="bg-primary text-primary-content rounded-full w-10">
-                                <span class="text-sm">{{ member.user.username|first|upper }}</span>
-                            </div>
-                        </div>
-                    </td>
                     <td>
                         <div class="font-medium">{{ member.user.username }}</div>
                     </td>
