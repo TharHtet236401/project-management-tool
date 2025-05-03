@@ -62,8 +62,6 @@ def login_view(request):
                     return redirect('home')
                 else:
                     error_message = 'Invalid username or password'
-            else:
-                error_message = 'Please correct the errors below'
             
             context = {
                 'form': form,
