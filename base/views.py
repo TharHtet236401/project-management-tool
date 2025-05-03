@@ -47,19 +47,37 @@ def team(request):
         return render(request, 'base/team.html', {'error': str(e)})
 
 def login_view(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
+    try:
+        form = LoginForm()
+        if request.user.is_authenticated:
             return redirect('home')
-        else:
-            return render(request, 'base/login.html', {'error': 'Invalid username or password'})
-    form = LoginForm()
-    return render(request, 'base/login.html', {'form': form})
+        if request.method == 'POST':
+            form = LoginForm(request.POST)
+            if form.is_valid():
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password']
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('home')
+                else:
+                    error_message = 'Invalid username or password'
+            else:
+                error_message = 'Please correct the errors below'
+            
+            context = {
+                'form': form,
+                'error_message': error_message
+            }
+            return render(request, 'base/login.html', context)
+        
+        return render(request, 'base/login.html', {'form': form})
+    except Exception as e:
+        context = {
+            'form': form,
+            'error_message': 'An unexpected error occurred. Please try again.'
+        }
+        return render(request, 'base/login.html', context)
 
 def logout_view(request):
     logout(request)
