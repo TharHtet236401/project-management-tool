@@ -4,6 +4,7 @@
     <img src="{% static 'base/images/logo.jpg' %}" alt="Logo" class="w-10 h-10 rounded-full">
   </div>
   <div class="flex-none relative">
+    {% if request.user.is_authenticated %}
     <ul class="menu menu-horizontal px-1">
       <li><a href="{% url 'home' %}">Home</a></li>
       
@@ -16,11 +17,13 @@
           </ul>
         </details>
       </li>
-      {% if request.user.is_authenticated %}
+     
       <li><a href="">Logout</a></li>
-      {% else %}
-      <li><a href="">Login</a></li>
-      {% endif %}
     </ul>
+    {% else %}
+    <ul class="menu menu-horizontal px-1">
+      <li><a href="">Login</a></li>
+    </ul>
+    {% endif %}
   </div>
 </div>
