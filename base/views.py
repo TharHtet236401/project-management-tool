@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Project, Profile
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from .forms import LoginForm
 # Create your views here.
@@ -47,6 +47,8 @@ def team(request):
         return render(request, 'base/team.html', {'error': str(e)})
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -58,4 +60,9 @@ def login_view(request):
             return render(request, 'base/login.html', {'error': 'Invalid username or password'})
     form = LoginForm()
     return render(request, 'base/login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
 

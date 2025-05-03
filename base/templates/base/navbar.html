@@ -17,8 +17,10 @@
           </ul>
         </details>
       </li>
-     
-      <li><a href="">Logout</a></li>
+      <form hx-post="{% url 'logout' %}" hx-target="#base-container" hx-swap="innerHTML">
+        {% csrf_token %}
+        <li><button type="submit">Logout</button></li>
+      </form>
     </ul>
     {% endif %}
   </div>
