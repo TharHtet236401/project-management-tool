@@ -3,6 +3,7 @@ from .models import Project, Profile
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
+from .forms import LoginForm
 # Create your views here.
 
 @login_required(login_url='login')
@@ -55,5 +56,6 @@ def login_view(request):
             return redirect('home')
         else:
             return render(request, 'base/login.html', {'error': 'Invalid username or password'})
-    return render(request, 'base/login.html')
+    form = LoginForm()
+    return render(request, 'base/login.html', {'form': form})
 
