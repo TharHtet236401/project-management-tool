@@ -6,6 +6,7 @@ class LoginForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': 'input input-bordered w-full',
             'placeholder': 'Enter your username',
+
             'autofocus': True
         })
     )

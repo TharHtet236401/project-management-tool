@@ -1,13 +1,26 @@
 {% extends 'base/main.html' %}
 
 {% block content %}
-<div class="flex flex-col items-center justify-center h-screen">
-    <h1>Please Login</h1>
-    <form action="" hx-post="{% url 'login' %}" hx-target="#base-container" hx-swap="innerHTML">
-        {% csrf_token %}
-    {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Login</button>
-    </form>
+{% load static %}
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <div class="flex flex-col items-center mb-6">
+            <!-- Logo or App Name -->
+            <img src="{% static 'base/images/logo.jpg' %}" alt="Logo" class="w-16 h-16 mb-2" />
+            <h2 class="text-2xl font-bold text-gray-800">Welcome Back</h2>
+            <p class="text-gray-500">Please login to your account</p>
+        </div>
+        <form action="" hx-post="{% url 'login' %}" hx-target="#base-container" hx-swap="innerHTML" method="post" class="space-y-5">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md transition duration-200">
+                Login
+            </button>
+        </form>
+        <div class="mt-4 text-center">
+            <a href="" class="text-sm text-indigo-500 hover:underline">Forgot password?</a>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
