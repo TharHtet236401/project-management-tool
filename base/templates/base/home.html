@@ -13,7 +13,7 @@
             <div class="card bg-base-200 cursor-pointer" hx-get="{% url 'projects' %}" hx-target="#mainContent" hx-trigger="click" hx-swap="innerHTML">
                 <div class="card-body">
                     <h2 class="card-title">Projects</h2>
-                    <p>0 Active Projects</p>
+                    <p>{{ projects.count }} Active Projects</p>
                 </div>
             </div>
             
@@ -27,10 +27,27 @@
             <div class="card bg-base-200">
                 <div class="card-body">
                     <h2 class="card-title">Team</h2>
-                    <p>0 Team Members</p>
+                    <p>{{ team_members.count }} Team Members</p>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="flex justify-between items-center mt-10 mb-4">
+        <h2 class="text-2xl font-semibold">Recent Projects</h2>
+        <a hx-get="{% url 'projects' %}" hx-target="#mainContent" hx-trigger="click" hx-swap="innerHTML" class="btn btn-primary">View All Projects</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+     
+        {% for project in recent_projects %}
+            <div class="card bg-base-100">
+                <div class="card-body">
+                    <h3 class="card-title">{{ project.name }}</h3>
+                    <p>{{ project.description|truncatewords:20 }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <p>No recent projects.</p>
+        {% endfor %}
     </div>
 </div>
 
