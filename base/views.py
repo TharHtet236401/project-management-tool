@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from .models import Project, Profile
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect
 # Create your views here.
 
+@login_required(login_url='login')
 def home(request):
     try:
         projects = Project.objects.all()
@@ -21,13 +25,16 @@ def home(request):
         # Optionally, log the error or show a friendly message
         return render(request, 'base/home.html', {'error': str(e)})
 
+@login_required(login_url='login')
 def projects(request):
     projects = Project.objects.all()
     return render(request, 'base/projects.html', {'projects': projects})
 
+@login_required(login_url='login')
 def tasks(request):
     return render(request, 'base/tasks.html')
 
+@login_required(login_url='login')
 def team(request):
     try:
         team_members = Profile.objects.select_related('user').all()
@@ -38,4 +45,15 @@ def team(request):
     except Exception as e:
         return render(request, 'base/team.html', {'error': str(e)})
 
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            return render(request, 'base/login.html', {'error': 'Invalid username or password'})
+    return render(request, 'base/login.html')
 
