@@ -1,12 +1,14 @@
 {% extends 'base/main.html' %}
 
 {% block content %}
-<h1>Please Login</h1>
-<form action="" method="post">
-    {% csrf_token %}
+<div class="flex flex-col items-center justify-center h-screen">
+    <h1>Please Login</h1>
+    <form action="" hx-post="{% url 'login' %}" hx-target="#base-container" hx-swap="innerHTML">
+        {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
 {% endblock %}
 
 
