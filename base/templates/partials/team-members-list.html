@@ -1,0 +1,46 @@
+<div class="card bg-base-100 shadow-lg">
+    <div class="card-body">
+        <ul class="space-y-4">
+            {% for member in team_members %}
+                <li class="card bg-base-200 hover:bg-base-300 transition-colors duration-200">
+                    <div class="card-body p-4">
+                        <div class="flex items-center gap-4">
+                            <div class="avatar placeholder">
+                                <div class="bg-neutral text-neutral-content rounded-full w-12">
+                                    <span class="text-lg">{{ member.user.username|first|upper }}</span>
+                                </div>
+                            </div>
+                            <div class="flex-grow">
+                                <h3 class="text-lg font-semibold">{{ member.user.username }}</h3>
+                                <div class="flex items-center gap-2 text-sm text-base-content/70">
+                                    <span class="badge badge-primary">{{ member.role|title }}</span>
+                                    <span>•</span>
+                                    <span>{{ member.projects_count }} projects</span>
+                                </div>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                    </svg>
+                                    {% if member.user.email %}
+                                        <span class="text-sm">{{ member.user.email }}</span>
+                                    {% else %}
+                                        <span class="text-sm">No email</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if member.phone %}
+                                <div class="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                                    </svg>
+                                    <span>{{ member.phone }}</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

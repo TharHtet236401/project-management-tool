@@ -28,4 +28,14 @@ def projects(request):
 def tasks(request):
     return render(request, 'base/tasks.html')
 
+def team(request):
+    try:
+        team_members = Profile.objects.select_related('user').all()
+        context = {
+            'team_members': team_members,
+        }
+        return render(request, 'base/team.html', context)
+    except Exception as e:
+        return render(request, 'base/team.html', {'error': str(e)})
+
 

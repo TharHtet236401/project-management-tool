@@ -24,7 +24,7 @@
                 </div>
             </div>
             
-            <div class="card bg-base-200">
+            <div class="card bg-base-200 cursor-pointer" hx-get="{% url 'team' %}" hx-target="#mainContent" hx-trigger="click" hx-swap="innerHTML">
                 <div class="card-body">
                     <h2 class="card-title">Team</h2>
                     <p>{{ team_members.count }} Team Members</p>
