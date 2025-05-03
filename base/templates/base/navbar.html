@@ -6,6 +6,7 @@
   <div class="flex-none relative">
     <ul class="menu menu-horizontal px-1">
       <li><a href="{% url 'home' %}">Home</a></li>
+      
       <li>
         <details class="dropdown dropdown-end">
           <summary>Menu</summary>
@@ -15,6 +16,11 @@
           </ul>
         </details>
       </li>
+      {% if request.user.is_authenticated %}
+      <li><a href="">Logout</a></li>
+      {% else %}
+      <li><a href="">Login</a></li>
+      {% endif %}
     </ul>
   </div>
 </div>
