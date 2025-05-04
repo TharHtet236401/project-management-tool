@@ -6,49 +6,114 @@
 <div class="mainContent" id="mainContent">
     <div class="prose max-w-none">
         <h1 class="text-4xl font-bold mb-6">Welcome to Project Management System</h1>
-        <p class="text-lg mb-4">Manage your projects and tasks efficiently.</p>
+        <p class="text-lg mb-4 text-base-content/70">Manage your projects and tasks efficiently.</p>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
             <!-- Quick Stats -->
-            <div class="card bg-base-200 cursor-pointer" hx-get="{% url 'projects' %}" hx-target="#mainContent" hx-trigger="click" hx-swap="innerHTML">
+            <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer" 
+                 hx-get="{% url 'projects' %}" 
+                 hx-target="#mainContent" 
+                 hx-trigger="click" 
+                 hx-swap="innerHTML">
                 <div class="card-body">
-                    <h2 class="card-title">Projects</h2>
-                    <p>{{ projects.count }} Active Projects</p>
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-primary/10 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="card-title text-xl">Projects</h2>
+                            <p class="text-2xl font-semibold text-primary">{{ projects.count }}</p>
+                            <p class="text-sm text-base-content/70">Active Projects</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <div class="card bg-base-200">
+            <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
                 <div class="card-body">
-                    <h2 class="card-title">Tasks</h2>
-                    <p>0 Pending Tasks</p>
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-secondary/10 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="card-title text-xl">Tasks</h2>
+                            <p class="text-2xl font-semibold text-secondary">0</p>
+                            <p class="text-sm text-base-content/70">Pending Tasks</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <div class="card bg-base-200 cursor-pointer" hx-get="{% url 'team' %}" hx-target="#mainContent" hx-trigger="click" hx-swap="innerHTML">
+            <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer" 
+                 hx-get="{% url 'team' %}" 
+                 hx-target="#mainContent" 
+                 hx-trigger="click" 
+                 hx-swap="innerHTML">
                 <div class="card-body">
-                    <h2 class="card-title">Team</h2>
-                    <p>{{ team_members.count }} Team Members</p>
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-accent/10 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="card-title text-xl">Team</h2>
+                            <p class="text-2xl font-semibold text-accent">{{ team_members.count }}</p>
+                            <p class="text-sm text-base-content/70">Team Members</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="flex justify-between items-center mt-10 mb-4">
-        <h2 class="text-2xl font-semibold">Recent Projects</h2>
-        <a hx-get="{% url 'projects' %}" hx-target="#mainContent" hx-trigger="click" hx-swap="innerHTML" class="btn btn-primary">View All Projects</a>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-     
-        {% for project in recent_projects %}
-            <div class="card bg-base-100">
-                <div class="card-body">
-                    <h3 class="card-title">{{ project.name }}</h3>
-                    <p>{{ project.description|truncatewords:20 }}</p>
+
+    <div class="mt-12">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold">Recent Projects</h2>
+            <a hx-get="{% url 'projects' %}" 
+               hx-target="#mainContent" 
+               hx-trigger="click" 
+               hx-swap="innerHTML" 
+               class="btn btn-primary btn-sm">
+                View All Projects
+            </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for project in recent_projects %}
+                <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="card-body p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="card-title text-xl font-semibold text-primary">{{ project.name }}</h3>
+                            <div class="badge badge-outline {% if project.status == 'Completed' %}badge-success{% elif project.status == 'In Progress' %}badge-info{% else %}badge-warning{% endif %}">
+                                {{ project.status }}
+                            </div>
+                        </div>
+                        <p class="text-base-content/70 mb-4 line-clamp-2">{{ project.description }}</p>
+                        <div class="flex items-center gap-2 text-sm text-base-content/70">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            {% if project.members.count == 0 %}
+                                <span>No Members</span>
+                            {% elif project.members.count == 1 %}
+                                <span>{{ project.members.count }} Member</span>
+                            {% else %}
+                                <span>{{ project.members.count }} Members</span>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        {% empty %}
-            <p>No recent projects.</p>
-        {% endfor %}
+            {% empty %}
+                <div class="col-span-2 text-center py-8">
+                    <p class="text-base-content/70">No recent projects available.</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
-
 {% endblock %} 
