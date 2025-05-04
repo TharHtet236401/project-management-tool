@@ -40,7 +40,7 @@
                             <span class="text-base-content/70">{{ project.members.count }} Members</span>
                         {% endif %}
                     </div>
-                    <button class="btn btn-primary btn-sm">View Details</button>
+                    <button class="btn btn-primary btn-sm" hx-get="{% url 'project_detail' project.id %}" hx-target="#base-container" hx-swap="innerHTML">View Details</button>
                 </div>
             </div>
         </div>

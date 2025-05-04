@@ -51,7 +51,19 @@ def projects(request):
         }
         return render(request, 'base/projects.html', context)
 
-
+@login_required(login_url='login')
+def project_detail(request, pk):
+    try:
+        project = Project.objects.get(id=pk)
+        context = {
+            'project': project
+        }
+        return render(request, 'base/project-detail.html', context)
+    except Exception as e:
+        context = {
+            'error': str(e)
+        }
+        return render(request, 'base/project-detail.html', context)
 
 
 @login_required(login_url='login')
