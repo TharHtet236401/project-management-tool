@@ -34,6 +34,9 @@ class Project(models.Model):
     members = models.ManyToManyField(Profile, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def members_count(self):
+        return self.members.count()
     
     def __str__(self):
         return self.name
