@@ -28,17 +28,6 @@
           <span class="badge badge-outline {% if project.status == 'completed' %}badge-success{% elif project.status == 'in_progress' %}badge-info{% else %}badge-warning{% endif %}">{{ project.get_status_display }}</span>
         </div>
         <div>
-          <span class="font-semibold">Priority:</span>
-          <span class="badge badge-outline">No priority</span>
-        </div>
-        <div>
-          <span class="font-semibold">Lead:</span>
-          <span class="avatar placeholder w-8 h-8">
-            <!-- Show lead avatar if available -->
-            <span class="text-xs">-</span>
-          </span>
-        </div>
-        <div>
           <span class="font-semibold">Members:</span>
           <div class="flex -space-x-2">
             {% for member in project.members.all %}
@@ -47,10 +36,6 @@
               </span>
             {% endfor %}
           </div>
-        </div>
-        <div>
-          <span class="font-semibold">Teams:</span>
-          <span class="badge badge-outline">Burmese-ai</span>
         </div>
         <div>
           <span class="font-semibold">Start date:</span>
