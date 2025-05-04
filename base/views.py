@@ -30,7 +30,7 @@ def home(request):
 @login_required(login_url='login')
 def projects(request):
     try:
-        projects = Project.objects.all()
+        projects = Project.objects.all().order_by('-created_at')
         paginator = Paginator(projects, 10)
         page_number = request.GET.get('page')
         try:
@@ -50,6 +50,9 @@ def projects(request):
             'error': str(e)
         }
         return render(request, 'base/projects.html', context)
+
+
+
 
 @login_required(login_url='login')
 def tasks(request):
