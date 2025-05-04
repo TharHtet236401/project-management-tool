@@ -32,6 +32,11 @@
       </footer>
     </div>
 
+    <script>
+      document.body.addEventListener('htmx:afterSwap', function(evt) {
+        window.scrollTo(0, 0);
+      });
+    </script>
     {% block extra_js %}{% endblock %}
   </body>
 </html>

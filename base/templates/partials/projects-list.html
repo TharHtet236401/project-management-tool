@@ -5,7 +5,7 @@
             <div class="card-body p-6">
                 <div class="flex justify-between items-start mb-4">
                     <h2 class="card-title text-xl font-semibold text-primary">{{ project.name }}</h2>
-                    <div class="badge badge-outline {% if project.status == 'Completed' %}badge-success{% elif project.status == 'In Progress' %}badge-info{% else %}badge-warning{% endif %}">
+                    <div class="badge badge-outline whitespace-nowrap px-4 py-2 text-base {% if project.status == 'Completed' %}badge-success{% elif project.status == 'In Progress' %}badge-info{% else %}badge-warning{% endif %}">
                         {{ project.status }}
                     </div>
                 </div>
@@ -56,7 +56,8 @@
                     hx-get="{% url 'projects' %}?page={{ projects.previous_page_number }}"
                     hx-target="#base-container"
                     hx-swap="innerHTML"
-                    hx-push-url="true">
+                    hx-push-url="true"
+                    hx-on::after-request="window.scrollTo({top: 0, behavior: 'smooth'})">
                 «
             </button>
         {% else %}
@@ -71,7 +72,8 @@
                         hx-get="{% url 'projects' %}?page={{ num }}"
                         hx-target="#base-container"
                         hx-swap="innerHTML"
-                        hx-push-url="true">
+                        hx-push-url="true"
+                        hx-on::after-request="window.scrollTo({top: 0, behavior: 'smooth'})">
                     {{ num }}
                 </button>
             {% endif %}
@@ -82,15 +84,14 @@
                     hx-get="{% url 'projects' %}?page={{ projects.next_page_number }}"
                     hx-target="#base-container"
                     hx-swap="innerHTML"
-                    hx-push-url="true">
+                    hx-push-url="true"
+                    hx-on::after-request="window.scrollTo({top: 0, behavior: 'smooth'})">
                 »
             </button>
         {% else %}
             <button class="join-item btn btn-sm btn-disabled">»</button>
         {% endif %}
-    
     </div>
-  
 </div>
 <div class="text-center mt-2 text-sm text-base-content/70">
     Showing {{ projects.start_index }}-{{ projects.end_index }} of {{ projects.paginator.count }} projects
