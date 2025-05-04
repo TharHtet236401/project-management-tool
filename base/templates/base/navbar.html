@@ -6,7 +6,7 @@
   <div class="flex-none relative">
     {% if request.user.is_authenticated %}
     <ul class="menu menu-horizontal px-1">
-      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a hx-get="{% url 'home' %}" hx-target="#base-container" hx-swap="innerHTML">Home</a></li>
       
       <li>
         <details class="dropdown dropdown-end">
