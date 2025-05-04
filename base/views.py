@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from .forms import LoginForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from .forms import ProjectForm
 # Create your views here.
 
 @login_required(login_url='login')
@@ -117,3 +118,7 @@ def logout_view(request):
     return redirect('login')
 
 
+def create_project(request):
+    print("create_project")
+    form = ProjectForm()
+    return render(request, 'base/project-create-form.html', {'form': form})
