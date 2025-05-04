@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from .forms import LoginForm
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 # Create your views here.
 
 @login_required(login_url='login')
@@ -28,8 +29,27 @@ def home(request):
 
 @login_required(login_url='login')
 def projects(request):
-    projects = Project.objects.all()
-    return render(request, 'base/projects.html', {'projects': projects})
+    try:
+        projects = Project.objects.all()
+        paginator = Paginator(projects, 10)
+        page_number = request.GET.get('page')
+        try:
+            page_obj = paginator.page(page_number)
+        except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+            page_obj = paginator.page(1)
+        except EmptyPage:
+        # If page is out of range, deliver last page of results
+            page_obj = paginator.page(paginator.num_pages)
+        context = {
+            'projects': page_obj,
+        }
+        return render(request, 'base/projects.html', context)
+    except Exception as e:
+        context = {
+            'error': str(e)
+        }
+        return render(request, 'base/projects.html', context)
 
 @login_required(login_url='login')
 def tasks(request):
