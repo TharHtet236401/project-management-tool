@@ -1,67 +1,77 @@
 {% extends 'base/main.html' %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    {% if error %}
-        <div class="alert alert-error mb-4">
-            <span>{{ error }}</span>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+  <!-- Main Content -->
+  <div class="md:col-span-2">
+    <div class="card bg-base-100 shadow-xl mb-6">
+      <div class="card-body">
+        <h1 class="card-title text-3xl font-bold text-primary">{{ project.name }}</h1>
+        <p class="mt-2 text-base-content/70">{{ project.description }}</p>
+      </div>
+    </div>
+    <div class="card bg-base-100 shadow mb-6">
+      <div class="card-body">
+        <h2 class="text-xl font-semibold mb-2">Project Updates</h2>
+        <!-- Placeholder for updates or activity feed -->
+        <p class="text-base-content/50">No updates yet. Start collaborating!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div>
+    <div class="card bg-base-100 shadow mb-6">
+      <div class="card-body space-y-2">
+        <div>
+          <span class="font-semibold">Status:</span>
+          <span class="badge badge-outline {% if project.status == 'completed' %}badge-success{% elif project.status == 'in_progress' %}badge-info{% else %}badge-warning{% endif %}">{{ project.get_status_display }}</span>
         </div>
-    {% else %}
-        <div class="card bg-base-100 shadow-xl">
-            <div class="card-body">
-                <div class="flex justify-between items-start mb-4">
-                    <h1 class="card-title text-2xl font-bold text-primary">{{ project.name }}</h1>
-                    <div class="badge badge-outline whitespace-nowrap px-4 py-2 text-base {% if project.status == 'completed' %}badge-success{% elif project.status == 'in_progress' %}badge-info{% else %}badge-warning{% endif %}">
-                        {{ project.get_status_display }}
-                    </div>
-                </div>
-
-                <div class="prose max-w-none mb-6">
-                    <p class="text-base-content/80">{{ project.description }}</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <span class="text-base-content/70">Start Date: {{ project.start_date }}</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <span class="text-base-content/70">End Date: {{ project.end_date }}</span>
-                    </div>
-                </div>
-
-                <div class="divider"></div>
-
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-4">Team Members</h2>
-                    <div class="flex flex-wrap gap-4">
-                        {% if project.members.all %}
-                            {% for member in project.members.all %}
-                                <div class="flex items-center gap-2">
-                                    <div class="avatar placeholder">
-                                        <div class="bg-neutral text-neutral-content rounded-full w-8">
-                                            <span>{{ member.user.first_name|first }}{{ member.user.last_name|first }}</span>
-                                        </div>
-                                    </div>
-                                    <span>{{ member.user.get_full_name }}</span>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <p class="text-base-content/70">No team members assigned to this project.</p>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <div class="card-actions justify-end">
-                    <button class="btn btn-primary" hx-get="{% url 'projects' %}" hx-target="#base-container" hx-swap="innerHTML">Back to Projects</button>
-                </div>
-            </div>
+        <div>
+          <span class="font-semibold">Priority:</span>
+          <span class="badge badge-outline">No priority</span>
         </div>
-    {% endif %}
+        <div>
+          <span class="font-semibold">Lead:</span>
+          <span class="avatar placeholder w-8 h-8">
+            <!-- Show lead avatar if available -->
+            <span class="text-xs">-</span>
+          </span>
+        </div>
+        <div>
+          <span class="font-semibold">Members:</span>
+          <div class="flex -space-x-2">
+            {% for member in project.members.all %}
+              <span class="avatar placeholder w-8 h-8">
+                <span>{{ member.user.first_name|first }}{{ member.user.last_name|first }}</span>
+              </span>
+            {% endfor %}
+          </div>
+        </div>
+        <div>
+          <span class="font-semibold">Teams:</span>
+          <span class="badge badge-outline">Burmese-ai</span>
+        </div>
+        <div>
+          <span class="font-semibold">Start date:</span>
+          <span>{{ project.start_date }}</span>
+        </div>
+        <div>
+          <span class="font-semibold">Target date:</span>
+          <span>{{ project.end_date }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="card bg-base-100 shadow">
+      <div class="card-body">
+        <h2 class="text-lg font-semibold mb-2">Progress</h2>
+        <progress class="progress progress-primary w-full" value="0" max="100"></progress>
+        <div class="text-xs text-base-content/50 mt-1">0% completed</div>
+      </div>
+    </div>
+    <div class="mt-6">
+      <button class="btn btn-primary w-full" hx-get="{% url 'projects' %}" hx-target="#base-container" hx-swap="innerHTML">Back to Projects</button>
+    </div>
+  </div>
 </div>
 {% endblock %} 
