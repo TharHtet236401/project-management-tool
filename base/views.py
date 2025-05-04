@@ -121,23 +121,18 @@ def logout_view(request):
 @login_required(login_url='login')
 def create_project(request):
     try:
-        print("create_project view called")
         if request.method == 'POST':
-            print("POST request received")
-            print("Form data:", request.POST)
             form = ProjectForm(request.POST)
-            print("Form is valid:", form.is_valid())
-            print("Form errors:", form.errors)
-            
             if form.is_valid():
-                print("Form is valid, saving project")
-                project = form.save()
-                print("Project saved with ID:", project.id)
+                project = form.save(commit=False)
+                user = request.user
+                profile = Profile.objects.get(user=user)
+                project.members.add(profile)
+                project.save()
                 return redirect('projects')
             else:
                 print("Form validation errors:", form.errors)
         else:
-            print("GET request received")
             form = ProjectForm()
         
         return render(request, 'base/project-create-form.html', {'form': form})

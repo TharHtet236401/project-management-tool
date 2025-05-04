@@ -9,12 +9,10 @@
             <form method="POST" action="{% url 'create_project' %}" class="space-y-4">
                 {% csrf_token %}
                 
-                {% if form.errors %}
+                {% if form.non_field_errors %}
                     <div class="alert alert-error mb-4">
-                        {% for field, errors in form.errors.items %}
-                            {% for error in errors %}
-                                <span>{{ field }}: {{ error }}</span>
-                            {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <span>{{ error }}</span>
                         {% endfor %}
                     </div>
                 {% endif %}
@@ -32,6 +30,13 @@
                             <label class="label">
                                 <span class="label-text-alt">{{ field.help_text }}</span>
                             </label>
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="text-error text-sm mt-1">
+                                {% for error in field.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
                         {% endif %}
                     </div>
                 {% endfor %}
