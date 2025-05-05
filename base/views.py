@@ -132,11 +132,13 @@ def signup_view(request):
                 messages.success(request, 'Account created successfully! Please login.')
                 return redirect('login')
             else:
+                messages.error(request, 'An error occurred: Please check your form this is from signup view.')
                 print("error in signup view")
                 response = HttpResponse(render(request, 'partials/signup-form.html', {'form': form}))
                 response['hx-retarget'] = '#auth-container'
-                messages.error(request, 'An error occurred: Please check your form this is from signup view.')
                 return response
+                
+                
         else:
             form = SignupForm()
         
