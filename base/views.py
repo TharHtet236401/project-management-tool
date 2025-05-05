@@ -113,6 +113,10 @@ def login_view(request):
         messages.error(request, 'An unexpected error occurred. Please try again.')
         return render(request, 'base/login.html', context)
 
+
+def signup_view(request):
+    return render(request, 'partials/signup-form.html')
+
 def logout_view(request):
     logout(request)
     return redirect('login')

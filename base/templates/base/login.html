@@ -2,7 +2,7 @@
 
 {% block content %}
 {% load static %}
-<div class="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+<div class="flex flex-col items-center justify-center min-h-screen" id ="auth-container">
     <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
         <div class="flex flex-col items-center mb-6">
             <!-- Logo or App Name -->
@@ -33,6 +33,9 @@
         </form>
         <div class="mt-4 text-center">
             <a href="" class="text-sm text-indigo-500 hover:underline">Forgot password?</a>
+        </div>
+        <div class="mt-4 text-center">
+            <a hx-get="{% url 'signup' %}" hx-target="#auth-container" hx-swap="innerHTML" class="text-sm text-indigo-500 hover:underline">Don't have an account? <span class="font-bold">Sign up</span></a>
         </div>
     </div>
 </div>
