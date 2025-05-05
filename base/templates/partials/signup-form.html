@@ -1,5 +1,5 @@
 
-<div class="min-h-screen flex items-center justify-center bg-gray-100">
+<div class="min-h-screen flex items-center justify-center">
     <div class="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-lg">
         <div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -21,7 +21,7 @@
         </div>
         {% endif %}
 
-        <form class="mt-8 space-y-6" method="POST" action="{% url 'signup' %}">
+        <form class="mt-8 space-y-6" hx-post="{% url 'signup' %}" hx-target="#auth-container" hx-swap="innerHTML">
             {% csrf_token %}
             
             <div class="rounded-md shadow-sm space-y-4">
@@ -81,7 +81,7 @@
             </div>
 
             <div class="text-sm text-center">
-                <p>Already have an account? <a href="{% url 'login' %}" class="font-medium text-indigo-600 hover:text-indigo-500">Sign in</a></p>
+                <p>Already have an account? <a hx-get="{% url 'login' %}" hx-target="#auth-container" hx-swap="innerHTML" class="font-medium text-indigo-600 hover:text-indigo-500">Sign in</a></p>
             </div>
         </form>
     </div>

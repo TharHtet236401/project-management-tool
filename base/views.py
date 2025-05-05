@@ -7,6 +7,7 @@ from .forms import LoginForm, SignupForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .forms import ProjectForm
 from django.contrib import messages
+from django.http import HttpResponse
 # Create your views here.
 
 @login_required(login_url='login')
@@ -88,6 +89,7 @@ def login_view(request):
         form = LoginForm()
         if request.user.is_authenticated:
             return redirect('home')
+        
         if request.method == 'POST':
             form = LoginForm(request.POST)
             if form.is_valid():
@@ -104,8 +106,12 @@ def login_view(request):
                 'form': form,
             }
             return render(request, 'base/login.html', context)
-        
-        return render(request, 'base/login.html', {'form': form})
+        elif request.headers.get('HX-Request'):
+            response = HttpResponse(render(request, 'partials/login-form.html', {'form': form}))
+            response['hx-retarget'] = '#auth-container'
+            return response
+        else:
+            return render(request, 'base/login.html', {'form': form})
     except Exception as e:
         context = {
             'form': form,
@@ -125,6 +131,12 @@ def signup_view(request):
                 user = form.save()
                 messages.success(request, 'Account created successfully! Please login.')
                 return redirect('login')
+            else:
+                print("error in signup view")
+                response = HttpResponse(render(request, 'partials/signup-form.html', {'form': form}))
+                response['hx-retarget'] = '#auth-container'
+                messages.error(request, 'An error occurred: Please check your form this is from signup view.')
+                return response
         else:
             form = SignupForm()
         
