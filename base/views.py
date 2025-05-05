@@ -3,7 +3,7 @@ from .models import Project, Profile
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
-from .forms import LoginForm
+from .forms import LoginForm, SignupForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .forms import ProjectForm
 from django.contrib import messages
@@ -115,7 +115,23 @@ def login_view(request):
 
 
 def signup_view(request):
-    return render(request, 'partials/signup-form.html')
+    try:
+        if request.user.is_authenticated:
+            return redirect('home')
+            
+        if request.method == 'POST':
+            form = SignupForm(request.POST)
+            if form.is_valid():
+                user = form.save()
+                messages.success(request, 'Account created successfully! Please login.')
+                return redirect('login')
+        else:
+            form = SignupForm()
+        
+        return render(request, 'partials/signup-form.html', {'form': form})
+    except Exception as e:
+        messages.error(request, f'An error occurred: {str(e)}')
+        return render(request, 'partials/signup-form.html', {'form': form})
 
 def logout_view(request):
     logout(request)

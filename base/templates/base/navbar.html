@@ -5,7 +5,9 @@
   </div>
   <div class="flex-none relative">
     {% if request.user.is_authenticated %}
+ 
     <ul class="menu menu-horizontal px-1">
+      <li><p>{{ request.user.username }}</p></li>
       <li><a hx-get="{% url 'home' %}" hx-target="#base-container" hx-swap="innerHTML">Home</a></li>
       
       <li>

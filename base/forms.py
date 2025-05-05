@@ -1,5 +1,6 @@
 from django import forms
-from .models import Project
+from .models import Project, Profile
+from django.contrib.auth.models import User
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -70,4 +71,71 @@ class ProjectForm(forms.ModelForm):
             self.add_error('end_date', "End date must be after start date")
         
         return cleaned_data
+
+class SignupForm(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'input input-bordered w-full',
+            'placeholder': 'Enter your password'
+        })
+    )
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'input input-bordered w-full',
+            'placeholder': 'Confirm your password'
+        })
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'input input-bordered w-full',
+            'placeholder': 'Enter your email'
+        })
+    )
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'input input-bordered w-full',
+            'placeholder': 'Enter your username'
+        })
+    )
+    role = forms.ChoiceField(
+        choices=Profile.roles,
+        widget=forms.Select(attrs={
+            'class': 'select select-bordered w-full'
+        })
+    )
+    phone = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'input input-bordered w-full',
+            'placeholder': 'Enter your phone number (optional)'
+        })
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password']
+
+    def clean_confirm_password(self):
+        password = self.cleaned_data.get('password')
+        confirm_password = self.cleaned_data.get('confirm_password')
+        
+        if password and confirm_password and password != confirm_password:
+            raise forms.ValidationError("Passwords don't match")
+        return confirm_password
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        
+        if commit:
+            user.save()
+            # Create associated profile
+            Profile.objects.create(
+                user=user,
+                role=self.cleaned_data['role'],
+                phone=self.cleaned_data['phone']
+            )
+        return user
+
+
 
