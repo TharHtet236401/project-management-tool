@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from .forms import LoginForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .forms import ProjectForm
+from django.contrib import messages
 # Create your views here.
 
 @login_required(login_url='login')
@@ -97,11 +98,10 @@ def login_view(request):
                     login(request, user)
                     return redirect('home')
                 else:
-                    error_message = 'Invalid username or password'
+                    messages.error(request, 'Invalid username or password test')
             
             context = {
                 'form': form,
-                'error_message': error_message
             }
             return render(request, 'base/login.html', context)
         
@@ -109,8 +109,8 @@ def login_view(request):
     except Exception as e:
         context = {
             'form': form,
-            'error_message': 'An unexpected error occurred. Please try again.'
         }
+        messages.error(request, 'An unexpected error occurred. Please try again.')
         return render(request, 'base/login.html', context)
 
 def logout_view(request):

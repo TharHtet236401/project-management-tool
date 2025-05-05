@@ -11,9 +11,16 @@
             <p class="text-gray-500">Please login to your account</p>
         </div>
         
-        {% if error_message %}
+        <!-- {% if error_message %}
         <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
             {{ error_message }}
+        </div>
+        {% endif %} -->
+        {% if messages %}
+        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
         </div>
         {% endif %}
 
