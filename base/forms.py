@@ -20,6 +20,10 @@ class LoginForm(forms.Form):
 
 
 class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ['name', 'description', 'start_date', 'end_date', 'status']
+
     name = forms.CharField(
         max_length=255,
         widget=forms.TextInput(attrs={
@@ -56,11 +60,7 @@ class ProjectForm(forms.ModelForm):
             'required': True
         })
     )
-
-    class Meta:
-        model = Project
-        fields = ['name', 'description', 'start_date', 'end_date', 'status']
-
+   
     def clean(self):
         cleaned_data = super().clean()
         start_date = cleaned_data.get('start_date')
