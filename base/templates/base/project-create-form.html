@@ -13,7 +13,7 @@
         <div class="card-body">
             <h2 class="card-title text-2xl font-bold mb-6">Create New Project</h2>
             
-            <form method="POST" action="{% url 'create_project' %}" class="space-y-4">
+            <form hx-post="{% url 'create_project' %}" hx-target="#base-container" hx-swap="innerHTML" class="space-y-4">
                 {% csrf_token %}
                 
                 {% if form.non_field_errors %}
