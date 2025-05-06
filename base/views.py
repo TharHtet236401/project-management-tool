@@ -181,7 +181,8 @@ def create_project(request):
                     profile = Profile.objects.get(user=user)
                     print("profile is", profile)
                     project.save()  # Save the project first
-                    project.members.add(profile)  # Then add the member
+                    project.members.add(profile)#add the profile to the project
+                    profile.projects_assigned.add(project)  #add the project to the profile
                     print("project is saved")
                     return redirect('projects')
                 except Profile.DoesNotExist:
