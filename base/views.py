@@ -86,6 +86,7 @@ def team(request):
 
 def login_view(request):
     try:
+        print("login view is called")
         form = LoginForm()
         if request.user.is_authenticated:
             return redirect('home')
@@ -109,8 +110,10 @@ def login_view(request):
         elif request.headers.get('HX-Request'):
             response = HttpResponse(render(request, 'partials/login-form.html', {'form': form}))
             response['hx-retarget'] = '#auth-container'
+            print("retarget is true")
             return response
         else:
+            print("retarget is false")
             return render(request, 'base/login.html', {'form': form})
     except Exception as e:
         context = {
@@ -148,8 +151,20 @@ def signup_view(request):
         return render(request, 'partials/signup-form.html', {'form': form})
 
 def logout_view(request):
-    logout(request)
-    return redirect('login')
+    try:
+        logout(request)
+        if request.headers.get('HX-Request'):
+            print("HX-Request is true")
+            response = HttpResponse()
+            response['HX-Redirect'] = '/login/'
+            return response
+    except Exception as e:
+        if request.headers.get('HX-Request'):
+            print("HX-Request is true")
+            response = HttpResponse()
+            response['HX-Redirect'] = '/login/'
+            return response
+        return redirect('login')
 
 
 @login_required(login_url='login')
