@@ -8,6 +8,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .forms import ProjectForm
 from django.contrib import messages
 from django.http import HttpResponse
+from django.core.cache import cache
 # Create your views here.
 
 @login_required(login_url='login')
@@ -17,9 +18,35 @@ def home(request):
         team_members = Profile.objects.select_related('user').all()
         project_count = projects.count()
         team_count = team_members.count()
-        recent_projects = projects.order_by('-id')[:5]  # Show 5 most recent projects
+        
+        # Try to get cached recent projects
+        try:
+            cache_key = 'recent_projects'
+            print(f"Attempting to get cache with key: {cache_key}")
+            cached_projects = cache.get(cache_key)
+            print(f"Cache get result: {cached_projects}")
+            
+            if cached_projects is not None:
+                recent_projects = cached_projects
+                print("Using cached projects")
+            else:
+                # If not in cache, get from database and cache it
+                recent_projects = list(projects.order_by('-id')[:5])
+                print(f"Setting cache with key: {cache_key}")
+                print(f"Projects to cache: {recent_projects}")
+                cache_result = cache.set(cache_key, recent_projects, timeout=300)
+                print(f"Cache set result: {cache_result}")
+                
+                # Verify cache was set
+                verify_cache = cache.get(cache_key)
+                print(f"Verification of cache after set: {verify_cache}")
+                
+        except Exception as cache_error:
+            print(f"Cache error: {cache_error}")
+            recent_projects = projects.order_by('-id')[:5]  # Fallback to database query
+        
         context = {
-            'projects': projects,
+            'projects': recent_projects,
             'team_members': team_members,
             'project_count': project_count,
             'team_count': team_count,
@@ -27,7 +54,7 @@ def home(request):
         }
         return render(request, 'base/home.html', context)
     except Exception as e:
-        # Optionally, log the error or show a friendly message
+        print(f"Error in home view: {e}")
         return render(request, 'base/home.html', {'error': str(e)})
 
 @login_required(login_url='login')
