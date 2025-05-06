@@ -170,23 +170,32 @@ def logout_view(request):
 @login_required(login_url='login')
 def create_project(request):
     try:
+        print("create project view is called")
         if request.method == 'POST':
             form = ProjectForm(request.POST)
             if form.is_valid():
                 project = form.save(commit=False)
                 user = request.user
-                profile = Profile.objects.get(user=user)
-                project.members.add(profile)
-                project.save()
-                return redirect('projects')
+                print("user is", user)
+                try:
+                    profile = Profile.objects.get(user=user)
+                    print("profile is", profile)
+                    project.save()  # Save the project first
+                    project.members.add(profile)  # Then add the member
+                    print("project is saved")
+                    return redirect('projects')
+                except Profile.DoesNotExist:
+                    messages.error(request, 'Profile not found. Please contact administrator.')
+                    print("profile not found")
+                    return render(request, 'base/project-create-form.html', {'form': form})
             else:
                 print("Form validation errors:", form.errors)
+                return render(request, 'base/project-create-form.html', {'form': form})
         else:
             form = ProjectForm()
-        
-        return render(request, 'base/project-create-form.html', {'form': form})
+            return render(request, 'base/project-create-form.html', {'form': form})
     except Exception as e:
         print("Exception occurred:", str(e))
-        form = ProjectForm()
-        form.add_error(None, f'Error creating project: {str(e)}')
+        form = ProjectForm(request.POST if request.method == 'POST' else None)
+        messages.error(request, f'Error creating project: {str(e)}')
         return render(request, 'base/project-create-form.html', {'form': form})
