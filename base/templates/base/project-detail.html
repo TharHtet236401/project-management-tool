@@ -6,15 +6,53 @@
   <div class="md:col-span-2">
     <div class="card bg-base-100 shadow-xl mb-6">
       <div class="card-body">
-        <h1 class="card-title text-3xl font-bold text-primary">{{ project.name }}</h1>
-        <p class="mt-2 text-base-content/70">{{ project.description }}</p>
+        <div class="flex items-center justify-between">
+          <div id="project-name" class="flex-1">
+            <p class="card-title text-3xl font-bold text-primary editable-content">{{ project.name }}</p>
+            <div class="edit-form hidden">
+              <input type="text" class="input input-bordered w-full" value="{{ project.name }}">
+              <div class="flex justify-end mt-2">
+                <button class="btn btn-sm btn-primary">Save</button>
+                <button class="btn btn-sm btn-ghost" onclick="cancelEdit('project-name')">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="toggleEdit('project-name')">
+            <i class="fas fa-edit"></i>
+          </button>
+        </div>
+        <div id="project-description" class="mt-2 text-base-content/70">
+          <p class="editable-content">{{ project.description }}</p>
+          <div class="edit-form hidden">
+            <textarea class="textarea textarea-bordered w-full" rows="3">{{ project.description }}</textarea>
+            <div class="flex justify-end mt-2">
+              <button class="btn btn-sm btn-primary">Save</button>
+              <button class="btn btn-sm btn-ghost" onclick="cancelEdit('project-description')">Cancel</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="card bg-base-100 shadow mb-6">
       <div class="card-body">
-        <h2 class="text-xl font-semibold mb-2">Project Updates</h2>
-        <!-- Placeholder for updates or activity feed -->
-        <p class="text-base-content/50">No updates yet. Start collaborating!</p>
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-semibold mb-2">Project Updates</h2>
+          <button class="btn btn-ghost btn-sm" onclick="toggleEdit('project-updates')">
+            <i class="fas fa-plus"></i> Add Update
+          </button>
+        </div>
+        <div id="project-updates">
+          <div class="edit-form hidden">
+            <textarea class="textarea textarea-bordered w-full" rows="3" placeholder="Enter your project update..."></textarea>
+            <div class="flex justify-end mt-2">
+              <button class="btn btn-sm btn-primary">Post Update</button>
+              <button class="btn btn-sm btn-ghost" onclick="cancelEdit('project-updates')">Cancel</button>
+            </div>
+          </div>
+          <div class="updates-list">
+            <p class="text-base-content/50">No updates yet. Start collaborating!</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -23,34 +61,64 @@
   <div>
     <div class="card bg-base-100 shadow mb-6">
       <div class="card-body space-y-2">
-        <div>
+        <div class="flex items-center justify-between">
           <span class="font-semibold">Status:</span>
-          <span class="badge badge-outline {% if project.status == 'completed' %}badge-success{% elif project.status == 'in_progress' %}badge-info{% else %}badge-warning{% endif %}">{{ project.get_status_display }}</span>
+          <select class="select select-bordered select-sm" 
+                  hx-post="{ }"
+                  hx-trigger="change"
+                  hx-swap="outerHTML">
+            <option value="not_started" {% if project.status == 'not_started' %}selected{% endif %}>Not Started</option>
+            <option value="in_progress" {% if project.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+            <option value="completed" {% if project.status == 'completed' %}selected{% endif %}>Completed</option>
+          </select>
         </div>
         <div>
           <span class="font-semibold">Members:</span>
-          <div class="flex -space-x-2">
-            {% for member in project.members.all %}
-              <span class="avatar placeholder w-8 h-8">
-                <span>{{ member.user.first_name|first }}{{ member.user.last_name|first }}</span>
-              </span>
-            {% endfor %}
+          <div class="flex items-center justify-between">
+            <div class="flex -space-x-2">
+              {% for member in project.members.all %}
+                <span class="avatar placeholder w-8 h-8">
+                  <span>{{ member.user.first_name|first }}{{ member.user.last_name|first }}</span>
+                </span>
+              {% endfor %}
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="toggleEdit('add-members')">
+              <i class="fas fa-user-plus"></i>
+            </button>
+          </div>
+          <div id="add-members" class="edit-form hidden mt-2">
+            <input type="text" class="input input-bordered w-full" placeholder="Search users...">
+            <div class="flex justify-end mt-2">
+              <button class="btn btn-sm btn-primary">Add</button>
+              <button class="btn btn-sm btn-ghost" onclick="cancelEdit('add-members')">Cancel</button>
+            </div>
           </div>
         </div>
-        <div>
+        <div class="flex items-center justify-between">
           <span class="font-semibold">Start date:</span>
-          <span>{{ project.start_date }}</span>
+          <input type="date" class="input input-bordered input-sm" 
+                 value="{{ project.start_date|date:'Y-m-d' }}"
+                 hx-post="{ }"
+                 hx-trigger="change"
+                 name="start_date">
         </div>
-        <div>
+        <div class="flex items-center justify-between">
           <span class="font-semibold">Target date:</span>
-          <span>{{ project.end_date }}</span>
+          <input type="date" class="input input-bordered input-sm"
+                 value="{{ project.end_date|date:'Y-m-d' }}"
+                 hx-post="{ }"
+                 hx-trigger="change"
+                 name="end_date">
         </div>
       </div>
     </div>
     <div class="card bg-base-100 shadow">
       <div class="card-body">
         <h2 class="text-lg font-semibold mb-2">Progress</h2>
-        <progress class="progress progress-primary w-full" value="0" max="100"></progress>
+        <input type="range" min="0" max="100" value="0" 
+               class="range range-primary" 
+               hx-post=""
+               hx-trigger="change">
         <div class="text-xs text-base-content/50 mt-1">0% completed</div>
       </div>
     </div>
@@ -59,4 +127,32 @@
     </div>
   </div>
 </div>
+
+<script>
+function toggleEdit(elementId) {
+  const element = document.getElementById(elementId);
+  const editForm = element.querySelector('.edit-form');
+  const content = element.querySelector('.editable-content');
+  
+  if (editForm && content) {
+    editForm.classList.toggle('hidden');
+    content.classList.toggle('hidden');
+  } else if (editForm) {
+    editForm.classList.toggle('hidden');
+  }
+}
+
+function cancelEdit(elementId) {
+  const element = document.getElementById(elementId);
+  const editForm = element.querySelector('.edit-form');
+  const content = element.querySelector('.editable-content');
+  
+  if (editForm && content) {
+    editForm.classList.add('hidden');
+    content.classList.remove('hidden');
+  } else if (editForm) {
+    editForm.classList.add('hidden');
+  }
+}
+</script>
 {% endblock %} 
