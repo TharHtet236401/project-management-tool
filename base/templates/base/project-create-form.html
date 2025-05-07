@@ -49,7 +49,7 @@
                 {% endfor %}
 
                 <div class="card-actions justify-end mt-6">
-                    <button type="button" class="btn btn-ghost" onclick="window.history.back()">Cancel</button>
+                    <button type="button" class="btn btn-ghost" hx-get="{% url 'projects' %}" hx-target="#base-container" hx-swap="innerHTML">Cancel</button>
                     <button type="submit" class="btn btn-primary">Create Project</button>
                 </div>
             </form>
